@@ -48,7 +48,7 @@ Alat bantu untuk menenangkan pikiran dan tubuh.
 - **Backend**: [Laravel 10](https://laravel.com)
 - **Frontend**: [Blade Templates](https://laravel.com/docs/blade), [Tailwind CSS](https://tailwindcss.com), [Alpine.js](https://alpinejs.dev)
 - **Database**: MySQL
-- **AI Integration**: Google Gemini (via API)
+- **AI Integration**: Groq Cloud (via API)
 - **Charts**: Chart.js
 
 ### Prasyarat
