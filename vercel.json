@@ -6,8 +6,12 @@
     },
     "routes": [
         {
-            "src": "/(css|js|images|build|assets|favicon.ico|robots.txt)(.*)",
-            "dest": "/public/$1$2"
+            "src": "/((?:css|js|images|build|assets|storage)/.*)",
+            "dest": "/public/$1"
+        },
+        {
+            "src": "/(favicon\\.ico|robots\\.txt)",
+            "dest": "/public/$1"
         },
         {
             "src": "/(.*)",
@@ -26,7 +30,6 @@
         "VIEW_COMPILED_PATH": "/tmp",
         "CACHE_DRIVER": "array",
         "LOG_CHANNEL": "stderr",
-        "SESSION_DRIVER": "cookie",
-        "ASSET_URL": "https://${VERCEL_URL}"
+        "SESSION_DRIVER": "cookie"
     }
 }
