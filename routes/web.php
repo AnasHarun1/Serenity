@@ -25,6 +25,7 @@ Route::get('/report/download', [FeatureController::class, 'downloadReport'])->na
 Route::get('/sos', [FeatureController::class, 'sos'])->name('features.sos');
 Route::resource('capsule', CapsuleController::class);
 
+Route::middleware(['auth'])->group(function () {
     // Rute untuk fitur Chat
     Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
     Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
