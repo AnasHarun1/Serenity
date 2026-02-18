@@ -56,7 +56,7 @@ try {
     \Illuminate\Support\Facades\DB::statement('CREATE SCHEMA public');
 
     echo "Running migration (fresh force)...<br>";
-    Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+    Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--force' => true]);
     echo "<pre>" . Illuminate\Support\Facades\Artisan::output() . "</pre>";
 
     echo "<h3>DONE.</h3>";
