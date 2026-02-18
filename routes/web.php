@@ -9,7 +9,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\ArticleController;
-use App\Http\Controllers\CapsuleController; 
+use App\Http\Controllers\CapsuleController;
+use Illuminate\Support\Facades\Artisan;
 
 
 
@@ -53,16 +54,21 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-// Rute Jurnal Pintar
-Route::get('/journal', [JournalController::class, 'index'])->name('journal.index');
-Route::get('/journal/create', [JournalController::class, 'create'])->name('journal.create');
-Route::post('/journal', [JournalController::class, 'store'])->name('journal.store');
-Route::get('/journal/{id}', [JournalController::class, 'show'])->name('journal.show');
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// --- TEMPORARY MIGRATION ROUTE ---
+Route::get('/run-migration', function () {
+    try {
+        Artisan::call('migrate', ['--force' => true]);
+        return 'Migration run successfully! <br>' . nl2br(Artisan::output());
+    } catch (\Exception $e) {
+        return 'Migration failed: ' . $e->getMessage();
+    }
+});
+// ---------------------------------
 
 require __DIR__ . '/auth.php';
