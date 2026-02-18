@@ -87,7 +87,14 @@ class ChatController extends Controller
         // ----------------------------------------
 
         // B. Kirim ke Groq AI
-        $apiKey = env('GROQ_API_KEY');
+        $apiKey = config('services.groq.key');
+
+        if (empty($apiKey)) {
+            Log::error('GROQ_API_KEY is missing or empty.');
+            $aiReply = "Maaf, kunci API AI belum dikonfigurasi. Mohon hubungi admin.";
+            // Fallback checking for debugging (remove in final production if secure)
+            // $apiKey = env('GROQ_API_KEY'); 
+        }
 
         try {
             // "withoutVerifying()" penting untuk localhost Windows agar tidak error SSL
