@@ -64,7 +64,7 @@ class ChatController extends Controller
                     "INSTRUKSI PENTING: \n" .
                     "1. Gunakan Bahasa Indonesia yang natural dan santai. Seperti teman yang peduli\n" .
                     "2. Anggap pesan-pesan di atas adalah ingatanmu.\n" .
-                    "3. Jika pengguna menunjukkan tanda-tanda ingin menyakiti diri sendiri atau bunuh diri, STOP percakapan dan berikan pesan berikut: 'Saya mendengar rasa sakitmu, tapi saya hanyalah AI. Tolong segera hubungi profesional atau layanan darurat di 119.'\n"
+                    "3. Jika pengguna menunjukkan tanda-tanda ingin menyakiti diri sendiri atau bunuh diri, STOP percakapan dan berikan pesan berikut: 'Saya mendengar rasa sakitmu, tapi saya hanyalah AI. Tolong segera hubungi profesional atau layanan darurat di 119.'\n" .
                     "4. Jika kamu berpikir (thinking process), abaikan tag <think>...</think> di output akhir.\n" .
                     "5. Jaga jawaban tetap ringkas dan suportif.kecuali jika user meminta penjelasan lebih lanjut\n\n" .
                     $moodContext,
