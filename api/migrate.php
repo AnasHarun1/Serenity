@@ -52,7 +52,8 @@ try {
     }
 
     echo "Wiping Database (Scorched Earth)...<br>";
-    \Illuminate\Support\Facades\DB::statement('DROP SCHEMA public CASCADE; CREATE SCHEMA public;');
+    \Illuminate\Support\Facades\DB::statement('DROP SCHEMA public CASCADE');
+    \Illuminate\Support\Facades\DB::statement('CREATE SCHEMA public');
 
     echo "Running migration (fresh force)...<br>";
     Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
