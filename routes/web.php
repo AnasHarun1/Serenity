@@ -25,11 +25,13 @@ Route::get('/report/download', [FeatureController::class, 'downloadReport'])->na
 Route::get('/sos', [FeatureController::class, 'sos'])->name('features.sos');
 Route::resource('capsule', CapsuleController::class);
 
-Route::middleware(['auth'])->group(function () {
     // Rute untuk fitur Chat
     Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
     Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
     Route::post('/chat/clear', [ChatController::class, 'clearChat'])->name('chat.clear');
+
+    // Journal
+    Route::resource('journal', JournalController::class);
 });
 
 Route::get('/cek-model', function () {
@@ -58,6 +60,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Journal Routes
+    Route::get('/journal', [JournalController::class, 'index'])->name('journal.index');
+    Route::get('/journal/create', [JournalController::class, 'create'])->name('journal.create');
+    Route::post('/journal', [JournalController::class, 'store'])->name('journal.store');
+    Route::get('/journal/{id}', [JournalController::class, 'show'])->name('journal.show');
 });
 
 // --- TEMPORARY MIGRATION ROUTE ---
