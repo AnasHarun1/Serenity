@@ -37,6 +37,20 @@ try {
     Illuminate\Support\Facades\Artisan::call('config:clear');
     echo "Config cache cleared.<br>";
 
+    // Runtime Config Override (The "Hammer" approach)
+    // We force the config to change IN MEMORY to ensure direct connection is used.
+    $originalHost = env('DB_HOST');
+    $directHost = str_replace('-pooler', '', $originalHost);
+
+    Illuminate\Support\Facades\Config::set('database.connections.pgsql.host', $directHost);
+    Illuminate\Support\Facades\Config::set('database.connections.pgsql.port', '5432');
+
+    // Refresh the PDO connection to use the new config
+    Illuminate\Support\Facades\DB::purge('pgsql');
+    Illuminate\Support\Facades\DB::reconnect('pgsql');
+
+    echo "Runtime Config Applied (Direct Host): $directHost <br>";
+
     // Test Database Connection
     echo "Testing Database Connection...<br>";
     try {
@@ -50,10 +64,6 @@ try {
     } catch (\Exception $e) {
         throw new Exception("Database Connection Failed: " . $e->getMessage());
     }
-
-    echo "Wiping Database (Scorched Earth)...<br>";
-    \Illuminate\Support\Facades\DB::statement('DROP SCHEMA public CASCADE');
-    \Illuminate\Support\Facades\DB::statement('CREATE SCHEMA public');
 
     echo "Running migration (fresh force)...<br>";
     Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--force' => true]);
