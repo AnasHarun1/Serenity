@@ -1,0 +1,18 @@
+<?php
+
+require __DIR__ . '/../vendor/autoload.php';
+
+$app = require __DIR__ . '/../bootstrap/app.php';
+
+$app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+
+echo "<h1>Migration Status</h1>";
+
+try {
+    echo "Running migration...<br>";
+    Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+    echo "<pre>" . Illuminate\Support\Facades\Artisan::output() . "</pre>";
+    echo "Done.";
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage();
+}
