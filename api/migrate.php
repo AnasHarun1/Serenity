@@ -37,19 +37,22 @@ try {
     Illuminate\Support\Facades\Artisan::call('config:clear');
     echo "Config cache cleared.<br>";
 
-    // Runtime Config Override (The "Hammer" approach)
-    // We force the config to change IN MEMORY to ensure direct connection is used.
-    $originalHost = env('DB_HOST');
-    $directHost = str_replace('-pooler', '', $originalHost);
+    // Runtime Config Override (Refined)
+    // 1. Get current config (don't rely on env() which returns null if config is cached)
+    $currentHost = Illuminate\Support\Facades\Config::get('database.connections.pgsql.host');
+    echo "Current Config Host: " . $currentHost . "<br>";
 
+    // 2. Strip '-pooler'
+    $directHost = str_replace('-pooler', '', $currentHost);
+    echo "Target Direct Host: " . $directHost . "<br>";
+
+    // 3. Force update config
     Illuminate\Support\Facades\Config::set('database.connections.pgsql.host', $directHost);
     Illuminate\Support\Facades\Config::set('database.connections.pgsql.port', '5432');
 
-    // Refresh the PDO connection to use the new config
+    // 4. Purge and Reconnect
     Illuminate\Support\Facades\DB::purge('pgsql');
     Illuminate\Support\Facades\DB::reconnect('pgsql');
-
-    echo "Runtime Config Applied (Direct Host): $directHost <br>";
 
     // Test Database Connection
     echo "Testing Database Connection...<br>";
