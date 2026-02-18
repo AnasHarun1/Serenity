@@ -51,8 +51,8 @@ try {
         throw new Exception("Database Connection Failed: " . $e->getMessage());
     }
 
-    echo "Running migration (force)...<br>";
-    Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+    echo "Running migration (fresh force)...<br>";
+    Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--force' => true]);
     echo "<pre>" . Illuminate\Support\Facades\Artisan::output() . "</pre>";
 
     echo "<h3>DONE.</h3>";
