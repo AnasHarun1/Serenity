@@ -5,7 +5,13 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-echo "<h1>System Diagnostic & Migration</h1>";
+// FIX: Set explicit APP_URL to prevent "Host is malformed" error
+// Laravel Console tries to parse this URL during bootstrap.
+// If it contains unexpanded variables like ${VERCEL_URL}, it crashes.
+putenv('APP_URL=http://localhost');
+$_ENV['APP_URL'] = 'http://localhost';
+
+echo "<h1>System Diagnostic & Migration (Patched)</h1>";
 
 try {
     echo "Checking environment...<br>";
