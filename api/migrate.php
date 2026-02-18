@@ -37,17 +37,25 @@ try {
     Illuminate\Support\Facades\Artisan::call('config:clear');
     echo "Config cache cleared.<br>";
 
-    // Runtime Config Override (Refined)
-    // 1. Get current config (don't rely on env() which returns null if config is cached)
+    // Runtime Config Override (Refined V2)
+    // Problem: DATABASE_URL takes precedence over DB_HOST.
+
+    // 1. Handle 'url' config (Primary)
+    $currentUrl = Illuminate\Support\Facades\Config::get('database.connections.pgsql.url');
+    if ($currentUrl) {
+        echo "Current Config URL found. Sanitizing...<br>";
+        $directUrl = str_replace('-pooler', '', $currentUrl);
+        Illuminate\Support\Facades\Config::set('database.connections.pgsql.url', $directUrl);
+    }
+
+    // 2. Handle 'host' config (Secondary)
     $currentHost = Illuminate\Support\Facades\Config::get('database.connections.pgsql.host');
-    echo "Current Config Host: " . $currentHost . "<br>";
+    if ($currentHost) {
+        $directHost = str_replace('-pooler', '', $currentHost);
+        Illuminate\Support\Facades\Config::set('database.connections.pgsql.host', $directHost);
+    }
 
-    // 2. Strip '-pooler'
-    $directHost = str_replace('-pooler', '', $currentHost);
-    echo "Target Direct Host: " . $directHost . "<br>";
-
-    // 3. Force update config
-    Illuminate\Support\Facades\Config::set('database.connections.pgsql.host', $directHost);
+    // 3. Force Port 5432
     Illuminate\Support\Facades\Config::set('database.connections.pgsql.port', '5432');
 
     // 4. Purge and Reconnect
