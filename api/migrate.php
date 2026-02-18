@@ -6,12 +6,10 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // FIX: Set explicit APP_URL to prevent "Host is malformed" error
-// Laravel Console tries to parse this URL during bootstrap.
-// If it contains unexpanded variables like ${VERCEL_URL}, it crashes.
 putenv('APP_URL=http://localhost');
 $_ENV['APP_URL'] = 'http://localhost';
 
-echo "<h1>System Diagnostic & Migration (Patched)</h1>";
+echo "<h1>System Diagnostic & Migration (Patched + Clear Cache)</h1>";
 
 try {
     echo "Checking environment...<br>";
@@ -34,11 +32,21 @@ try {
     $kernel->bootstrap();
     echo "Kernel bootstrapped.<br>";
 
+    // FORCE CLEAR CACHE to ensure new DB_PORT env var is picked up
+    echo "Clearing config cache...<br>";
+    Illuminate\Support\Facades\Artisan::call('config:clear');
+    echo "Config cache cleared.<br>";
+
     // Test Database Connection
     echo "Testing Database Connection...<br>";
     try {
-        \Illuminate\Support\Facades\DB::connection()->getPdo();
+        $pdo = \Illuminate\Support\Facades\DB::connection()->getPdo();
         echo "Database connection successful!<br>";
+
+        // Show what connection is actually being used
+        $config = \Illuminate\Support\Facades\DB::getConfig();
+        echo "Connected to: " . $config['driver'] . " on host: " . $config['host'] . " port: " . $config['port'] . "<br>";
+
     } catch (\Exception $e) {
         throw new Exception("Database Connection Failed: " . $e->getMessage());
     }
