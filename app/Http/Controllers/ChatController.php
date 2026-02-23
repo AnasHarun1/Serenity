@@ -87,8 +87,12 @@ class ChatController extends Controller
         // ----------------------------------------
 
         // B. Kirim ke Groq AI
-        // Vercel serverless: getenv() is most reliable for dashboard env vars
-        $apiKey = getenv('GROQ_API_KEY') ?: config('services.groq.key') ?: env('GROQ_API_KEY');
+        // Primary: read from build-generated config (Vercel build injects env vars)
+        $secrets = @include(base_path('config/runtime_secrets.php'));
+        $apiKey = (!empty($secrets['groq_key'])) ? $secrets['groq_key'] : null;
+        // Fallback: try native PHP env, then Laravel helpers
+        if (empty($apiKey))
+            $apiKey = getenv('GROQ_API_KEY') ?: config('services.groq.key') ?: env('GROQ_API_KEY');
 
         if (empty($apiKey)) {
             Log::error('GROQ_API_KEY is missing or empty. Check Vercel Environment Variables.');
