@@ -90,39 +90,37 @@ class ChatController extends Controller
         $apiKey = config('services.groq.key');
 
         if (empty($apiKey)) {
-            Log::error('GROQ_API_KEY is missing or empty.');
+            Log::error('GROQ_API_KEY is missing or empty. Check Vercel Environment Variables.');
             $aiReply = "Maaf, kunci API AI belum dikonfigurasi. Mohon hubungi admin.";
-            // Fallback checking for debugging (remove in final production if secure)
-            // $apiKey = env('GROQ_API_KEY'); 
-        }
+        } else {
+            try {
+                // "withoutVerifying()" penting untuk localhost Windows agar tidak error SSL
+                $response = Http::withoutVerifying()
+                    ->withHeaders([
+                        'Authorization' => 'Bearer ' . $apiKey,
+                        'Content-Type' => 'application/json',
+                    ])->post('https://api.groq.com/openai/v1/chat/completions', [
+                            'model' => 'llama-3.3-70b-versatile',
+                            'messages' => $messagesForAI,
+                            'temperature' => 0.6,
+                        ]);
 
-        try {
-            // "withoutVerifying()" penting untuk localhost Windows agar tidak error SSL
-            $response = Http::withoutVerifying()
-                ->withHeaders([
-                    'Authorization' => 'Bearer ' . $apiKey,
-                    'Content-Type' => 'application/json',
-                ])->post('https://api.groq.com/openai/v1/chat/completions', [
-                        'model' => 'llama-3.3-70b-versatile',
-                        'messages' => $messagesForAI,
-                        'temperature' => 0.6,
-                    ]);
+                if ($response->failed()) {
+                    throw new \Exception('API Error: ' . $response->body());
+                }
 
-            if ($response->failed()) {
-                throw new \Exception('API Error: ' . $response->body());
+                // Ambil teks jawaban AI (Format OpenAI)
+                $rawReply = $response->json()['choices'][0]['message']['content'];
+
+                // Bersihkan tag <think>...</think> jika ada
+                $aiReply = preg_replace('/<think>.*?<\/think>/s', '', $rawReply);
+                $aiReply = trim($aiReply);
+
+            } catch (\Exception $e) {
+                Log::error('Chat Error: ' . $e->getMessage());
+                // Tampilkan pesan error asli ke user untuk debugging
+                $aiReply = "Maaf, terjadi error sistem: " . $e->getMessage();
             }
-
-            // Ambil teks jawaban AI (Format OpenAI)
-            $rawReply = $response->json()['choices'][0]['message']['content'];
-
-            // Bersihkan tag <think>...</think> jika ada
-            $aiReply = preg_replace('/<think>.*?<\/think>/s', '', $rawReply);
-            $aiReply = trim($aiReply);
-
-        } catch (\Exception $e) {
-            Log::error('Chat Error: ' . $e->getMessage());
-            // Tampilkan pesan error asli ke user untuk debugging
-            $aiReply = "Maaf, terjadi error sistem: " . $e->getMessage();
         }
 
         // C. Simpan Jawaban AI ke Database
