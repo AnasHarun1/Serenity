@@ -3,7 +3,8 @@
     "framework": null,
     "functions": {
         "api/index.php": { "runtime": "vercel-php@0.7.1" },
-        "api/migrate.php": { "runtime": "vercel-php@0.7.1" }
+        "api/migrate.php": { "runtime": "vercel-php@0.7.1" },
+        "api/debug-env.php": { "runtime": "vercel-php@0.7.1" }
     },
     "routes": [
         {
@@ -17,6 +18,10 @@
         {
             "src": "/migrate-db",
             "dest": "/api/migrate.php"
+        },
+        {
+            "src": "/debug-env",
+            "dest": "/api/debug-env.php"
         },
         {
             "src": "/(.*)",
