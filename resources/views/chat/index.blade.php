@@ -170,31 +170,29 @@
                         </div>
                     @else
                         @foreach($messages as $msg)
-                                    <div
-                                        class="flex w-full {{ $msg->is_user ? 'justify-end' : 'justify-start' }} animate-fade-in group relative z-10 mb-6">
-                                        <div
-                                            class="flex {{ $msg->is_user ? 'items-end' : 'items-start' }} max-w-[85%] md:max-w-[75%] gap-3">
+                            <div class="flex w-full {{ $msg->is_user ? 'justify-end' : 'justify-start' }} animate-fade-in group relative z-10 mb-6">
+                                <div class="flex {{ $msg->is_user ? 'items-end' : 'items-start' }} max-w-[85%] md:max-w-[75%] gap-3">
 
-                                            @if(!$msg->is_user)
-                                                <div
-                                                    class="w-8 h-8 md:w-10 md:h-10 rounded-2xl bg-sage-50 border border-sage-100 flex items-center justify-center text-lg shrink-0 shadow-sm mt-1">
-                                                    🌿</div>
-                                            @endif
+                                    @if(!$msg->is_user)
+                                        <div class="w-8 h-8 md:w-10 md:h-10 rounded-2xl bg-sage-50 border border-sage-100 flex items-center justify-center text-lg shrink-0 shadow-sm mt-1">
+                                            🌿
+                                        </div>
+                                    @endif
 
-                                            <div class="relative px-5 py-4 shadow-sm text-[15px] leading-relaxed
-                                            {{ $msg->is_user
-                                                ? 'bg-[#f05e35] text-white rounded-[2rem] rounded-tr-none shadow-orange-200/50'
-                                                : 'bg-white text-[#362214] border border-[#d6cec5] rounded-[2rem] rounded-tl-none' }}">
+                                    <div class="relative px-5 py-4 shadow-sm text-[15px] leading-relaxed
+                                        {{ $msg->is_user
+                                            ? 'bg-[#f05e35] text-white rounded-[2rem] rounded-tr-none shadow-orange-200/50'
+                                            : 'bg-white text-[#362214] border border-[#d6cec5] rounded-[2rem] rounded-tl-none' }}">
 
                                         {!! nl2br(e($msg->message)) !!}
 
-                                        <div class="text-[10px] mt-3 text-right font-bold uppercase tracking-wider opacity-50 
-                                                    {{ $msg->is_user ? 'text-orange-100' : 'text-[#a38f82]' }}">
+                                        <div class="text-[10px] mt-3 text-right font-bold uppercase tracking-wider opacity-50
+                                            {{ $msg->is_user ? 'text-orange-100' : 'text-[#a38f82]' }}">
                                             {{ $msg->created_at->format('H:i') }}
                                         </div>
-                                    </div>        </div>
-                                        </div>
                                     </div>
+                                </div>
+                            </div>
                         @endforeach
                     @endif
                     <!-- Spacer for easy scrolling -->
