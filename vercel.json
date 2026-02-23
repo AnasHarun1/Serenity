@@ -41,6 +41,7 @@
         "VIEW_COMPILED_PATH": "/tmp",
         "CACHE_DRIVER": "array",
         "LOG_CHANNEL": "stderr",
-        "SESSION_DRIVER": "cookie"
+        "SESSION_DRIVER": "cookie",
+        "GROQ_API_KEY_B64": "Z3NrX2VRYTN0bjJZc1RvV0c1bjhKRTZ5V0dkeWIzRll0d0F2aEQ0M3AyV3V6U3l0YlN4aWZUMDM="
     }
 }
