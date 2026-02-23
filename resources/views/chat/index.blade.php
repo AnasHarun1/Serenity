@@ -150,8 +150,8 @@
 
                 <div id="chat-container"
                     class="flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth relative overscroll-contain">
-                    <!-- Texture Overlay -->
-                    <div class="absolute inset-0 opacity-[0.4] pointer-events-none sticky top-0 h-full w-full"
+                    <!-- Texture Overlay (Fixed: removed sticky which conflicts with absolute) -->
+                    <div class="absolute inset-0 opacity-[0.03] pointer-events-none z-0"
                         style="background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png'); mix-blend-mode: multiply;">
                     </div>
 

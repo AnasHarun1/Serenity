@@ -86,8 +86,8 @@ class ChatController extends Controller
         ];
         // ----------------------------------------
 
-        // B. Kirim ke Groq AI
-        $apiKey = config('services.groq.key');
+        // B. Kirim ke Groq AI (try config first, fallback to env for Vercel serverless)
+        $apiKey = config('services.groq.key') ?: env('GROQ_API_KEY');
 
         if (empty($apiKey)) {
             Log::error('GROQ_API_KEY is missing or empty. Check Vercel Environment Variables.');
