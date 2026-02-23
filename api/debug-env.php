@@ -3,46 +3,47 @@
 // Temporary debug endpoint - DELETE AFTER USE
 header('Content-Type: application/json');
 
-$key_env = getenv('GROQ_API_KEY');
-$key_server = $_SERVER['GROQ_API_KEY'] ?? null;
-$key_ENV = $_ENV['GROQ_API_KEY'] ?? null;
+// Get ALL available env vars from different sources
+$all_getenv = getenv();
+$all_server_keys = array_keys($_SERVER);
+$all_env_keys = array_keys($_ENV);
 
-// Mask the key for security (show first 8 and last 4 chars)
-function maskKey($key)
+// Mask values for security
+function maskVal($v)
 {
-    if (empty($key))
-        return '(EMPTY/NULL)';
-    if (strlen($key) < 12)
-        return '(TOO_SHORT: ' . strlen($key) . ' chars)';
-    return substr($key, 0, 8) . '...' . substr($key, -4) . ' (' . strlen($key) . ' chars)';
+    if (empty($v))
+        return '(EMPTY)';
+    $v = (string) $v;
+    if (strlen($v) <= 6)
+        return $v;
+    return substr($v, 0, 4) . '...' . substr($v, -3) . ' (' . strlen($v) . 'c)';
 }
 
-// Also check via Laravel if possible
-$laravel_config = null;
-$laravel_env = null;
-try {
-    require __DIR__ . '/../vendor/autoload.php';
-    $app = require_once __DIR__ . '/../bootstrap/app.php';
-    $kernel = $app->make(\Illuminate\Contracts\Console\Kernel::class);
-    $kernel->bootstrap();
-
-    $laravel_config = config('services.groq.key');
-    $laravel_env = env('GROQ_API_KEY');
-} catch (\Exception $e) {
-    $laravel_config = 'ERROR: ' . $e->getMessage();
+// Filter for interesting env vars (not standard HTTP/server ones)
+$interesting = [];
+foreach ($all_getenv as $k => $v) {
+    // Skip standard server vars
+    if (in_array($k, ['PATH', 'SYSTEMROOT', 'COMSPEC', 'PATHEXT', 'WINDIR', 'TMP', 'TEMP', 'HOME']))
+        continue;
+    if (str_starts_with($k, 'HTTP_'))
+        continue;
+    if (str_starts_with($k, 'SERVER_'))
+        continue;
+    if (str_starts_with($k, 'REQUEST_'))
+        continue;
+    if (str_starts_with($k, 'REMOTE_'))
+        continue;
+    $interesting[$k] = maskVal($v);
 }
 
 echo json_encode([
-    'groq_key_sources' => [
-        'getenv()' => maskKey($key_env),
-        '$_SERVER' => maskKey($key_server),
-        '$_ENV' => maskKey($key_ENV),
-        'config(services.groq.key)' => maskKey($laravel_config),
-        'env(GROQ_API_KEY)' => maskKey($laravel_env),
+    'interesting_env_vars' => $interesting,
+    'total_getenv_count' => count($all_getenv),
+    'total_server_count' => count($all_server_keys),
+    'total_env_count' => count($all_env_keys),
+    'groq_specific' => [
+        'GROQ_API_KEY_getenv' => maskVal(getenv('GROQ_API_KEY')),
+        'groq_api_key_lower' => maskVal(getenv('groq_api_key')),
     ],
-    'all_env_keys_starting_with_GROQ' => array_filter(
-        array_keys($_SERVER),
-        fn($k) => str_contains(strtoupper($k), 'GROQ')
-    ),
     'tip' => 'DELETE this file after debugging!'
 ], JSON_PRETTY_PRINT);
