@@ -40,7 +40,6 @@
         "VIEW_COMPILED_PATH": "/tmp",
         "CACHE_DRIVER": "array",
         "LOG_CHANNEL": "stderr",
-        "SESSION_DRIVER": "cookie",
-        "GROQ_API_KEY": "${GROQ_API_KEY}"
+        "SESSION_DRIVER": "cookie"
     }
 }

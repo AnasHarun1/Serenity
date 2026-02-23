@@ -86,8 +86,9 @@ class ChatController extends Controller
         ];
         // ----------------------------------------
 
-        // B. Kirim ke Groq AI (try config first, fallback to env for Vercel serverless)
-        $apiKey = config('services.groq.key') ?: env('GROQ_API_KEY');
+        // B. Kirim ke Groq AI
+        // Vercel serverless: getenv() is most reliable for dashboard env vars
+        $apiKey = getenv('GROQ_API_KEY') ?: config('services.groq.key') ?: env('GROQ_API_KEY');
 
         if (empty($apiKey)) {
             Log::error('GROQ_API_KEY is missing or empty. Check Vercel Environment Variables.');
