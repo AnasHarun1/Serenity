@@ -122,23 +122,49 @@
                 </div>
             </div>
 
-            <!-- Hero Image -->
-            <div class="relative order-1 lg:order-2 mb-12 lg:mb-0 animate-float">
+            <!-- Hero Image Carousel -->
+            <div class="relative order-1 lg:order-2 mb-12 lg:mb-0 animate-float"
+                x-data="{
+                    current: 0,
+                    images: [
+                        { src: '{{ asset('images/hero-serenity.png') }}', alt: 'Woman writing journal in nature', quote: '\" Hari ini aku merasa lebih lega...\"', mood: 'Tenang' ,
+                color: 'green' }, { src: '{{ asset('images/hero-journaling.png') }}' , alt: 'Person journaling with tea'
+                , quote: '\"Menulis membuat pikiran lebih jernih...\"' , mood: 'Reflektif' , color: 'blue' }, {
+                src: '{{ asset('images/hero-meditation.png') }}' , alt: 'Woman meditating in garden' ,
+                quote: '\"Napas dalam, lepaskan perlahan...\"' , mood: 'Damai' , color: 'emerald' } ], init() {
+                setInterval(()=> { this.current = (this.current + 1) % this.images.length }, 5000);
+                }
+                }">
                 <div
                     class="relative w-full max-w-[500px] mx-auto aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl shadow-earth-900/10 border-8 border-white transform rotate-2">
-                    <img src="{{ asset('images/hero-serenity.png') }}" alt="Woman writing journal in nature"
-                        class="w-full h-full object-cover">
 
-                    <!-- Floating Quote Card -->
+                    <!-- Images with crossfade -->
+                    <template x-for="(img, index) in images" :key="index">
+                        <img :src="img.src" :alt="img.alt"
+                            class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000"
+                            :class="current === index ? 'opacity-100' : 'opacity-0'">
+                    </template>
+
+                    <!-- Floating Quote Card (changes with image) -->
                     <div
-                        class="absolute bottom-8 left-8 right-8 bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-white/50 shadow-lg">
-                        <p class="font-serif text-xl text-earth-900 italic mb-2">"Hari ini aku merasa lebih lega..."</p>
+                        class="absolute bottom-8 left-8 right-8 bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-white/50 shadow-lg transition-all duration-700">
+                        <p class="font-serif text-xl text-earth-900 italic mb-2" x-text="images[current].quote"></p>
                         <div class="flex items-center gap-3">
                             <div class="w-2 h-2 rounded-full bg-green-500"></div>
-                            <span class="text-xs font-bold text-earth-500 uppercase tracking-widest">Mood Terdeteksi:
-                                Tenang</span>
+                            <span class="text-xs font-bold text-earth-500 uppercase tracking-widest">
+                                Mood Terdeteksi: <span x-text="images[current].mood"></span>
+                            </span>
                         </div>
                     </div>
+                </div>
+
+                <!-- Dot Indicators -->
+                <div class="flex justify-center gap-2 mt-6">
+                    <template x-for="(img, index) in images" :key="'dot-'+index">
+                        <button @click="current = index" class="w-2.5 h-2.5 rounded-full transition-all duration-300"
+                            :class="current === index ? 'bg-terracotta-500 w-8' : 'bg-earth-300 hover:bg-earth-400'">
+                        </button>
+                    </template>
                 </div>
 
                 <!-- Decorative Elements -->
