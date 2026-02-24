@@ -123,18 +123,17 @@
             </div>
 
             <!-- Hero Image Carousel -->
-            <div class="relative order-1 lg:order-2 mb-12 lg:mb-0 animate-float"
-                x-data="{
+            <div class="relative order-1 lg:order-2 mb-12 lg:mb-0 animate-float" x-data='{
                     current: 0,
                     images: [
-                        { src: '{{ asset('images/hero-serenity.png') }}', alt: 'Woman writing journal in nature', quote: '\" Hari ini aku merasa lebih lega...\"', mood: 'Tenang' ,
-                color: 'green' }, { src: '{{ asset('images/hero-journaling.png') }}' , alt: 'Person journaling with tea'
-                , quote: '\"Menulis membuat pikiran lebih jernih...\"' , mood: 'Reflektif' , color: 'blue' }, {
-                src: '{{ asset('images/hero-meditation.png') }}' , alt: 'Woman meditating in garden' ,
-                quote: '\"Napas dalam, lepaskan perlahan...\"' , mood: 'Damai' , color: 'emerald' } ], init() {
-                setInterval(()=> { this.current = (this.current + 1) % this.images.length }, 5000);
-                }
-                }">
+                        { src: "{{ asset("images/hero-serenity.png") }}", alt: "Woman writing journal", quote: "Hari ini aku merasa lebih lega...", mood: "Tenang" },
+                        { src: "{{ asset("images/hero-journaling.png") }}", alt: "Person journaling with tea", quote: "Menulis membuat pikiran lebih jernih...", mood: "Reflektif" },
+                        { src: "{{ asset("images/hero-meditation.png") }}", alt: "Woman meditating in garden", quote: "Napas dalam, lepaskan perlahan...", mood: "Damai" }
+                    ],
+                    init() {
+                        setInterval(() => { this.current = (this.current + 1) % this.images.length }, 5000);
+                    }
+                }'>
                 <div
                     class="relative w-full max-w-[500px] mx-auto aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl shadow-earth-900/10 border-8 border-white transform rotate-2">
 
