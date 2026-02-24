@@ -1,6 +1,6 @@
 <nav x-data="{ mobileOpen: false, scrolled: false }" @scroll.window="scrolled = (window.pageYOffset > 20)"
     :class="{'bg-[#fdfcf8]/80 dark:bg-[#343d37]/80 backdrop-blur-xl border-b border-[#C04000]/10 dark:border-[#7C9082]/10 shadow-sm': scrolled, 'bg-transparent border-transparent': !scrolled}"
-    class="sticky top-0 z-50 transition-all duration-300 w-full">
+    class="sticky top-0 z-50 transition-all duration-300 w-full shrink-0">
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-24">

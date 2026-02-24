@@ -1,7 +1,7 @@
 <x-chat-layout>
     <!-- Main Container: Flex fill to respect mobile safe areas and address bars -->
     <div
-        class="h-full w-full max-w-5xl mx-auto flex flex-col relative px-4 pb-4 md:px-6 md:pb-6 overflow-hidden">
+        class="h-full w-full max-w-5xl mx-auto flex flex-col relative px-3 pb-6 md:px-6 md:pb-6 overflow-hidden">
 
         <!-- Background Blobs (Earth Tone) -->
         <div
@@ -200,7 +200,7 @@
                 </div>
 
                 <!-- Input Area (Fixed at bottom of flex container) -->
-                <div class="p-4 md:p-6 bg-white/80 border-t border-earth-100 relative z-20 backdrop-blur-md shrink-0">
+                <div class="pt-4 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] md:p-6 bg-white/80 border-t border-earth-100 relative z-20 backdrop-blur-md shrink-0">
                     <form @submit.prevent="sendMessage" class="relative group max-w-4xl mx-auto flex items-end gap-3">
 
                         <div
