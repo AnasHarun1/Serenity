@@ -200,7 +200,8 @@
                 </div>
 
                 <!-- Input Area (Fixed at bottom of flex container) -->
-                <div class="pt-4 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] md:p-6 bg-white/80 border-t border-earth-100 relative z-20 backdrop-blur-md shrink-0">
+                <!-- Use bottom padding 6 on mobile, safe-area-inset fallback -->
+                <div class="pt-4 px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] md:p-6 bg-white/80 border-t border-earth-100 relative z-20 backdrop-blur-md shrink-0">
                     <form @submit.prevent="sendMessage" class="relative group max-w-4xl mx-auto flex items-end gap-3">
 
                         <div

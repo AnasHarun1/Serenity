@@ -130,7 +130,8 @@
         </div>
     </div>
 
-    <div class="h-screen h-[100dvh] flex flex-col overflow-hidden w-full">
+    <!-- Use fixed inset-0 to force the app to stay strictly within the visible viewport on mobile -->
+    <div class="fixed inset-0 flex flex-col overflow-hidden w-full z-0">
         @include('layouts.navigation')
 
         <!-- Main Content Area -->
