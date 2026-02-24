@@ -130,11 +130,11 @@
         </div>
     </div>
 
-    <div class="h-screen h-[100dvh] flex flex-col overflow-hidden">
+    <div class="h-screen h-[100dvh] flex flex-col overflow-hidden w-full">
         @include('layouts.navigation')
 
-        <!-- Main Content Area: Use flex-1 to verify full height usage -->
-        <main class="flex-1 w-full h-full relative overflow-hidden">
+        <!-- Main Content Area -->
+        <main class="flex-1 w-full bg-transparent flex flex-col min-h-0 relative overflow-hidden">
             {{ $slot }}
         </main>
     </div>

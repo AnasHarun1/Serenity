@@ -1,7 +1,7 @@
 <x-chat-layout>
-    <!-- Main Container: Full Height minus header to prevent scroll issues -->
+    <!-- Main Container: Flex fill to respect mobile safe areas and address bars -->
     <div
-        class="h-[calc(100vh-65px)] md:h-[calc(100vh-80px)] max-w-5xl mx-auto flex flex-col relative px-4 pb-4 md:px-6 md:pb-6 overflow-hidden">
+        class="h-full w-full max-w-5xl mx-auto flex flex-col relative px-4 pb-4 md:px-6 md:pb-6 overflow-hidden">
 
         <!-- Background Blobs (Earth Tone) -->
         <div
