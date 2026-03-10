@@ -39,9 +39,10 @@ class ArticleController extends Controller
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', '%' . $search . '%')
-                    ->orWhere('content', 'like', '%' . $search . '%')
-                    ->orWhere('category', 'like', '%' . $search . '%');
+                // Ensure cross-database case insensitive search (SQLite, MySQL, PostgreSQL)
+                $q->whereRaw('LOWER(title) LIKE LOWER(?)', ['%' . $search . '%'])
+                    ->orWhereRaw('LOWER(content) LIKE LOWER(?)', ['%' . $search . '%'])
+                    ->orWhereRaw('LOWER(category) LIKE LOWER(?)', ['%' . $search . '%']);
             });
         }
 
