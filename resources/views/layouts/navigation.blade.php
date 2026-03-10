@@ -37,6 +37,14 @@
                     class="{{ $navBase }} {{ request()->routeIs('chat.*') ? $navActive : $navInactive }}">
                     <span>💬</span> Chat
                 </a>
+                <a href="{{ route('journal.index') }}"
+                    class="{{ $navBase }} {{ request()->routeIs('journal.*') ? $navActive : $navInactive }}">
+                    <span>📓</span> Jurnal Pintar
+                </a>
+                <a href="{{ route('capsule.index') }}"
+                    class="{{ $navBase }} {{ request()->routeIs('capsule.*') ? $navActive : $navInactive }}">
+                    <span>⏳</span> Time Capsule
+                </a>
 
                 <div class="relative" x-data="{ openFitur: false }">
                     <button @click="openFitur = !openFitur" @click.outside="openFitur = false"
@@ -51,15 +59,9 @@
 
                     <div x-show="openFitur" x-transition.origin.top style="display: none;"
                         class="absolute top-16 left-0 w-64 bg-[#fdfcf8] dark:bg-[#3b322b] rounded-3xl shadow-xl shadow-[#8A7E72]/10 border border-[#fdfcf8] dark:border-[#4e4239] py-3 z-50 overflow-hidden ring-1 ring-black/5">
-                        <a href="{{ route('journal.index') }}"
-                            class="block px-6 py-3 text-sm text-[#595149] dark:text-[#a3968c] hover:bg-[#fff5f0] dark:hover:bg-[#C04000]/20 hover:text-[#C04000] font-bold transition">📓
-                            Jurnal Pintar</a>
                         <a href="{{ route('library.index') }}"
                             class="block px-6 py-3 text-sm text-[#595149] dark:text-[#a3968c] hover:bg-[#fff5f0] dark:hover:bg-[#C04000]/20 hover:text-[#C04000] font-bold transition">📚
                             Pustaka</a>
-                        <a href="{{ route('capsule.index') }}"
-                            class="block px-6 py-3 text-sm text-[#595149] dark:text-[#a3968c] hover:bg-[#fff5f0] dark:hover:bg-[#C04000]/20 hover:text-[#C04000] font-bold transition">⏳
-                            Time Capsule</a>
                         <a href="{{ route('features.breathing') }}"
                             class="block px-6 py-3 text-sm text-[#595149] dark:text-[#a3968c] hover:bg-[#fff5f0] dark:hover:bg-[#C04000]/20 hover:text-[#C04000] font-bold transition">🧘‍♂️
                             Relaksasi</a>
@@ -184,12 +186,22 @@
                 class="flex items-center gap-4 p-4 rounded-2xl bg-[#fbf9f2] dark:bg-[#3b322b] text-[#3b322b] dark:text-[#f5f0e1] font-bold shadow-sm">
                 <span>💬</span> Chat
             </a>
+            <a href="{{ route('journal.index') }}"
+                class="flex items-center gap-4 p-4 rounded-2xl bg-[#fbf9f2] dark:bg-[#3b322b] text-[#3b322b] dark:text-[#f5f0e1] font-bold shadow-sm">
+                <span>📓</span> Jurnal Pintar
+            </a>
+            <a href="{{ route('capsule.index') }}"
+                class="flex items-center gap-4 p-4 rounded-2xl bg-[#fbf9f2] dark:bg-[#3b322b] text-[#3b322b] dark:text-[#f5f0e1] font-bold shadow-sm">
+                <span>⏳</span> Time Capsule
+            </a>
             <!-- Mood Deleted as Requested -->
 
             <div class="pl-4 pt-4 border-l-2 border-[#f0eeeb] dark:border-[#4e4239] space-y-3">
                 <p class="text-xs font-bold text-[#8A7E72] uppercase tracking-widest mb-2">Eksplorasi</p>
-                <a href="{{ route('journal.index') }}"
-                    class="block py-2 text-[#595149] dark:text-[#a3968c] font-bold">📓 Jurnal Pintar</a>
+                <a href="{{ route('library.index') }}"
+                    class="block py-2 text-[#595149] dark:text-[#a3968c] font-bold">📚 Pustaka</a>
+                <a href="{{ route('features.breathing') }}"
+                    class="block py-2 text-[#595149] dark:text-[#a3968c] font-bold">🧘‍♂️ Relaksasi</a>
                 <a href="{{ route('features.sos') }}" class="block py-2 text-red-500 font-bold">🆘 Bantuan Darurat</a>
             </div>
 

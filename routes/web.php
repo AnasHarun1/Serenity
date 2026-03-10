@@ -80,4 +80,15 @@ Route::get('/run-migration', function () {
 });
 // ---------------------------------
 
+// --- TEMPORARY SEEDER ROUTE ---
+Route::get('/run-seeder', function () {
+    try {
+        Artisan::call('db:seed', ['--force' => true]);
+        return 'Seeder run successfully! <br>' . nl2br(Artisan::output());
+    } catch (\Exception $e) {
+        return 'Seeder failed: ' . $e->getMessage();
+    }
+});
+// ---------------------------------
+
 require __DIR__ . '/auth.php';
