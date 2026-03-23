@@ -115,4 +115,23 @@ class DashboardController extends Controller
 
         return view('dashboard', compact('todayMood', 'chartLabels', 'chartData', 'topTags', 'dailyMission'));
     }
+
+    // FITUR BARU: Selesaikan Misi Harian
+    public function completeMission(Request $request)
+    {
+        $userId = Auth::id();
+        
+        $mission = DailyMission::where('user_id', $userId)
+            ->whereDate('mission_date', today())
+            ->first();
+
+        if ($mission && !$mission->is_completed) {
+            $mission->is_completed = true;
+            $mission->save();
+            
+            return redirect()->back()->with('success', 'Misi Harian Selesai! Kamu Hebat! 🌟');
+        }
+
+        return redirect()->back();
+    }
 }

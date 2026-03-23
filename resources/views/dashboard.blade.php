@@ -6,6 +6,14 @@
 
     <div class="relative max-w-6xl mx-auto space-y-12">
 
+        <!-- Notification section -->
+        @if(session('success'))
+            <div class="bg-[#eef2ee] dark:bg-[#343d37] border-l-4 border-[#7C9082] p-4 rounded-xl shadow-sm animate-fade-in flex items-center gap-3">
+                <span class="text-xl">✨</span>
+                <p class="font-bold text-[#343d37] dark:text-[#fdfcf8]">{{ session('success') }}</p>
+            </div>
+        @endif
+
         <!-- Header Section -->
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 animate-fade-in">
             <div class="relative">
@@ -185,11 +193,30 @@
                                 Harian</span>
 
                             @if(isset($dailyMission) && $dailyMission)
-                                <p
-                                    class="text-2xl font-serif font-bold text-[#343d37] dark:text-[#fdfcf8] leading-tight mb-4">
-                                    "{{ $dailyMission->mission_text }}"
-                                </p>
-                                <div class="h-1 w-20 bg-[#C04000]/20 rounded-full"></div>
+                                @if($dailyMission->is_completed)
+                                    <div class="flex items-start gap-4 mb-4">
+                                        <div class="mt-1 w-6 h-6 rounded-full bg-[#7C9082] flex items-center justify-center text-[#fdfcf8] shadow-inner flex-shrink-0">
+                                            ✓
+                                        </div>
+                                        <p class="text-2xl font-serif font-bold text-[#7C9082] leading-tight line-through opacity-70">
+                                            "{{ $dailyMission->mission_text }}"
+                                        </p>
+                                    </div>
+                                    <p class="text-sm font-bold text-[#7C9082] mb-1">Misi Selesai! 🎉</p>
+                                @else
+                                    <p class="text-2xl font-serif font-bold text-[#343d37] dark:text-[#fdfcf8] leading-tight mb-4">
+                                        "{{ $dailyMission->mission_text }}"
+                                    </p>
+                                    <form action="{{ route('mission.complete') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="inline-flex items-center gap-2 px-4 py-2 bg-[#C04000] text-[#fdfcf8] rounded-full text-sm font-bold shadow-md hover:bg-[#a03500] hover:shadow-lg transition cursor-pointer">
+                                            <div class="w-4 h-4 rounded-full border-2 border-[#fdfcf8] flex items-center justify-center text-[10px] text-transparent hover:text-[#C04000] transition group-hover:bg-white">
+                                            </div>
+                                            Tandai Selesai
+                                        </button>
+                                    </form>
+                                @endif
+                                <div class="h-1 w-20 bg-[#C04000]/20 rounded-full mt-4"></div>
                             @else
                                 <div class="text-center py-8">
                                     <p class="text-[#8A7E72] italic">Check-in dulu untuk buka misi rahasia.</p>
