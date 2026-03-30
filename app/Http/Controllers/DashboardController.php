@@ -84,8 +84,12 @@ class DashboardController extends Controller
 
             } catch (\Exception $e) {
                 // Fallback jika error/offline
-                $dailyMission = new DailyMission();
-                $dailyMission->mission_text = "Istirahatlah sejenak dan minum air putih.";
+                $dailyMission = DailyMission::create([
+                    'user_id' => $userId,
+                    'mission_text' => "Istirahatlah sejenak dan minum air putih.",
+                    'mission_date' => today(),
+                    'is_completed' => false
+                ]);
             }
         }
         // ==========================================
