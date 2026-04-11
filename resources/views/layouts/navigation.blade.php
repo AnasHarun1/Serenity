@@ -61,9 +61,7 @@
                         <a href="{{ route('capsule.index') }}"
                             class="block px-6 py-3 text-sm text-[#595149] dark:text-[#a3968c] hover:bg-[#fff5f0] dark:hover:bg-[#C04000]/20 hover:text-[#C04000] font-bold transition">⏳
                             Time Capsule</a>
-                        <a href="{{ route('features.breathing') }}"
-                            class="block px-6 py-3 text-sm text-[#595149] dark:text-[#a3968c] hover:bg-[#fff5f0] dark:hover:bg-[#C04000]/20 hover:text-[#C04000] font-bold transition">🧘‍♂️
-                            Relaksasi</a>
+
                     </div>
                 </div>
             </div>
@@ -197,8 +195,7 @@
                     class="block py-2 text-[#595149] dark:text-[#a3968c] font-bold">📚 Pustaka</a>
                 <a href="{{ route('capsule.index') }}"
                     class="block py-2 text-[#595149] dark:text-[#a3968c] font-bold">⏳ Time Capsule</a>
-                <a href="{{ route('features.breathing') }}"
-                    class="block py-2 text-[#595149] dark:text-[#a3968c] font-bold">🧘‍♂️ Relaksasi</a>
+
                 <a href="{{ route('features.sos') }}" class="block py-2 text-red-500 font-bold">🆘 Bantuan Darurat</a>
             </div>
 

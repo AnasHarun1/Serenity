@@ -19,8 +19,8 @@ Route::get('/library', [ArticleController::class, 'index'])->name('library.index
 Route::get('/library/{slug}', [ArticleController::class, 'show'])->name('library.show');
 
 // Features
-Route::get('/breathing', [FeatureController::class, 'breathing'])->name('features.breathing');
-Route::get('/music', [FeatureController::class, 'music'])->name('features.music');
+
+
 Route::get('/report/download', [FeatureController::class, 'downloadReport'])->name('report.download');
 Route::get('/sos', [FeatureController::class, 'sos'])->name('features.sos');
 Route::resource('capsule', CapsuleController::class);

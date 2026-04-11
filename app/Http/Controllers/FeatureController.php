@@ -10,15 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class FeatureController extends Controller
 {
-    public function breathing()
-    {
-        return view('features.breathing');
-    }
-
-    public function music()
-    {
-        return view('features.music');
-    }
 
     public function downloadReport()
     {
