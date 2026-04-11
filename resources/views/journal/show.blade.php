@@ -10,19 +10,11 @@
                     <h1 class="text-2xl font-bold mb-2">{{ $journal->title }}</h1>
                     <div class="flex gap-3 text-sm">
                         <span class="text-gray-500">{{ $journal->created_at->format('d M Y') }}</span>
-                        <span
-                            class="font-bold {{ $journal->detected_sentiment == 'Positif' ? 'text-green-600' : ($journal->detected_sentiment == 'Negatif' ? 'text-red-600' : 'text-gray-600') }}">
-                            {{ $journal->detected_sentiment }}
-                        </span>
+
                     </div>
                 </div>
 
-                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg mb-6 border border-blue-100">
-                    <h3 class="text-sm font-bold text-indigo-800 mb-1 flex items-center">
-                        🤖 AI Summary
-                    </h3>
-                    <p class="text-gray-700 italic">{{ $journal->ai_summary }}</p>
-                </div>
+
 
                 <div class="prose max-w-none text-gray-800 whitespace-pre-wrap leading-relaxed">
                     {{ $journal->content }}

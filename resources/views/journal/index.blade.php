@@ -36,17 +36,7 @@
                                 {{ $j->created_at->format('d M') }}
                             </span>
 
-                            @php
-                                $sentimentColor = match ($j->detected_sentiment) {
-                                    'Positif' => 'bg-green-500/80 text-green-50 shadow-[0_0_15px_rgba(34,197,94,0.5)]',
-                                    'Negatif' => 'bg-red-500/80 text-red-50 shadow-[0_0_15px_rgba(239,68,68,0.5)]',
-                                    default => 'bg-blue-500/80 text-blue-50 shadow-[0_0_15px_rgba(59,130,246,0.5)]',
-                                };
-                            @endphp
-                            <span
-                                class="px-3 py-1 text-[10px] font-extrabold uppercase tracking-widest rounded-full backdrop-blur-md {{ $sentimentColor }}">
-                                {{ $j->detected_sentiment }}
-                            </span>
+
                         </div>
 
                         <div class="flex-1"></div>
@@ -57,12 +47,7 @@
                                 {{ $j->title }}
                             </h3>
 
-                            <div
-                                class="relative pl-4 border-l-2 border-indigo-500/50 mb-4 opacity-80 group-hover:opacity-100 transition">
-                                <p class="text-sm font-light italic leading-relaxed line-clamp-2">
-                                    "{{ $j->ai_summary }}"
-                                </p>
-                            </div>
+
 
                             <div
                                 class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-indigo-300 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">

@@ -164,15 +164,13 @@
         <p style="color: #888; font-style: italic;">Tidak ada data mood bulan ini.</p>
     @endif
 
-    <h2>2. Analisis Jurnal & Sentimen</h2>
+    <h2>2. Catatan Jurnal</h2>
     @if($journals->count() > 0)
         <table class="data">
             <thead>
                 <tr>
                     <th width="20%">Tanggal</th>
-                    <th width="30%">Judul</th>
-                    <th width="10%">Sentimen</th>
-                    <th>Ringkasan AI</th>
+                    <th width="80%">Judul</th>
                 </tr>
             </thead>
             <tbody>
@@ -180,17 +178,6 @@
                     <tr>
                         <td>{{ $j->created_at->format('d/m/Y') }}</td>
                         <td>{{ $j->title }}</td>
-                        <td>
-                            @php
-                                $color = match ($j->detected_sentiment) {
-                                    'Positif' => 'bg-positif',
-                                    'Negatif' => 'bg-negatif',
-                                    default => 'bg-netral',
-                                };
-                            @endphp
-                            <span class="badge {{ $color }}">{{ $j->detected_sentiment }}</span>
-                        </td>
-                        <td>{{ $j->ai_summary }}</td>
                     </tr>
                 @endforeach
             </tbody>
