@@ -193,7 +193,7 @@
                 <p>
                     <strong>Serenity</strong> diciptakan bukan untuk menggantikan profesional medis, tapi sebagai
                     sahabat digital yang selalu ada di saku Anda.
-                    Menggunakan kecerdasan buatan Gemini, kami membantu Anda memetakan emosi, merangkai kata saat lidah
+                    Menggunakan teknologi kecerdasan buatan dengan ultra-low latency, kami membantu Anda memetakan emosi, merangkai kata saat lidah
                     keluh, dan menemukan pola dalam keseharian Anda.
                     Ini adalah ruang aman Anda. Pribadi. Tenang. Mengerti.
                 </p>
@@ -323,7 +323,7 @@
                     <span class="text-4xl group-hover:scale-110 transition">⚡</span>
                     <div>
                         <div class="text-beige-50 font-bold text-lg">Respon Real-time</div>
-                        <div class="text-earth-300 text-xs uppercase tracking-wider mt-1">Gemini AI Engine</div>
+                        <div class="text-earth-300 text-xs uppercase tracking-wider mt-1">Groq LPU Engine</div>
                     </div>
                 </div>
 
