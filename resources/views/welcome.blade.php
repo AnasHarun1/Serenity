@@ -105,7 +105,7 @@
                 <p class="text-lg text-earth-800/70 mb-10 leading-relaxed max-w-lg mx-auto lg:mx-0 animate-fade-in-up"
                     style="animation-delay: 0.2s;">
                     Di tengah hiruk pikuk dunia, <strong>Serenity</strong> hadir sebagai ruang aman Anda.
-                    Jurnal pintar bertenaga AI yang mendengar tanpa menghakimi, memahami emosi, dan menemani perjalanan
+                    Jurnal harian yang mendengar tanpa menghakimi, memahami emosi, dan menemani perjalanan
                     batin Anda.
                 </p>
 

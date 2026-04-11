@@ -4,8 +4,8 @@
         <div class="flex flex-col md:flex-row justify-between items-end mb-10 animate-fade-in gap-4">
             <div>
                 <span class="text-xs font-bold tracking-widest text-indigo-500 uppercase mb-2 block">My Stories</span>
-                <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight">Jurnal Pintar</h1>
-                <p class="text-slate-500 mt-2 text-lg">Setiap cerita memiliki makna. AI membantumu memahaminya.</p>
+                <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight">Jurnal Harian</h1>
+                <p class="text-slate-500 mt-2 text-lg">Setiap cerita memiliki makna. Catat momen dan rasakan kelegaan.</p>
             </div>
             <a href="{{ route('journal.create') }}"
                 class="group relative inline-flex items-center justify-center px-8 py-3 font-bold text-white transition-all duration-200 bg-slate-900 font-lg rounded-full hover:bg-slate-800 hover:shadow-lg hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-900">

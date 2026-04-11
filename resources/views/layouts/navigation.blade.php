@@ -39,7 +39,7 @@
                 </a>
                 <a href="{{ route('journal.index') }}"
                     class="{{ $navBase }} {{ request()->routeIs('journal.*') ? $navActive : $navInactive }}">
-                    <span>📓</span> Jurnal Pintar
+                    <span>📓</span> Jurnal Harian
                 </a>
 
                 <div class="relative" x-data="{ openFitur: false }">
@@ -187,7 +187,7 @@
             </a>
             <a href="{{ route('journal.index') }}"
                 class="flex items-center gap-4 p-4 rounded-2xl bg-[#fbf9f2] dark:bg-[#3b322b] text-[#3b322b] dark:text-[#f5f0e1] font-bold shadow-sm">
-                <span>📓</span> Jurnal Pintar
+                <span>📓</span> Jurnal Harian
             </a>
             <!-- Mood Deleted as Requested -->
 
