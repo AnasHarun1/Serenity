@@ -24,6 +24,7 @@ class MoodController extends Controller
     {
         $request->validate([
             'emoji_level' => 'required|integer|min:1|max:5',
+            'sleep_hours' => 'nullable|numeric|min:0|max:24',
             'tags' => 'nullable|array',
             'description' => 'nullable|string|max:255',
         ]);
@@ -35,6 +36,7 @@ class MoodController extends Controller
         Mood::create([
             'user_id' => $user->id,
             'emoji_level' => $request->emoji_level,
+            'sleep_hours' => $request->sleep_hours,
             'tags' => $tagsString,
             'description' => $request->description,
         ]);

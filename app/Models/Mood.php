@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Mood extends Model
 {
-    protected $fillable = ['user_id', 'emoji_level', 'tags', 'description'];
+    protected $fillable = ['user_id', 'emoji_level', 'tags', 'description', 'sleep_hours'];
 }

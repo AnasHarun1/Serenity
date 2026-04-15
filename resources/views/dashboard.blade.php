@@ -22,7 +22,14 @@
                     ✨</div>
                 <h1
                     class="text-5xl md:text-6xl font-black text-[#260d00] dark:text-[#f5f0e1] tracking-tight font-serif leading-tight">
-                    Selamat Pagi,<br>
+                    @php
+                        $hour = now()->timezone('Asia/Jakarta')->format('H');
+                        if ($hour < 11) $greeting = 'Selamat Pagi';
+                        elseif ($hour < 15) $greeting = 'Selamat Siang';
+                        elseif ($hour < 18) $greeting = 'Selamat Sore';
+                        else $greeting = 'Selamat Malam';
+                    @endphp
+                    {{ $greeting }},<br>
                     <span class="relative inline-block text-[#7C9082]">
                         {{ explode(' ', Auth::user()->name)[0] }}
                         <svg class="absolute w-full h-3 -bottom-1 left-0 text-[#C04000] opacity-30" viewBox="0 0 100 10"
