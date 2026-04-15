@@ -23,7 +23,7 @@
                 <h1
                     class="text-5xl md:text-6xl font-black text-[#260d00] dark:text-[#f5f0e1] tracking-tight font-serif leading-tight">
                     @php
-                        $hour = now()->timezone('Asia/Jakarta')->format('H');
+                        $hour = date('H');
                         if ($hour < 11) $greeting = 'Selamat Pagi';
                         elseif ($hour < 15) $greeting = 'Selamat Siang';
                         elseif ($hour < 18) $greeting = 'Selamat Sore';
