@@ -20,7 +20,7 @@
                     <div class="relative group cursor-default">
                         <div class="absolute inset-0 bg-gradient-to-tr from-terracotta-400 to-sage-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
                         <div class="relative w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-2xl shadow-sm border border-earth-50 group-hover:scale-105 transition duration-300">
-                            {{ auth()->user()->chat_mode === 'expert' ? '👨‍⚕️' : '🌿' }}
+                            {{ session('chat_mode', 'ai') === 'expert' ? '👨‍⚕️' : '🌿' }}
                         </div>
                         <span class="absolute -bottom-1 -right-1 flex h-3.5 w-3.5">
                             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
@@ -29,10 +29,10 @@
                     </div>
                     <div>
                         <h2 class="text-lg font-serif font-bold text-earth-900 tracking-tight leading-tight">
-                            {{ auth()->user()->chat_mode === 'expert' ? 'Admin Konselor' : 'Teman Cerita' }}
+                            {{ session('chat_mode', 'ai') === 'expert' ? 'Admin Konselor' : 'Teman Cerita' }}
                         </h2>
                         <span class="text-[10px] font-bold bg-sage-100 text-sage-700 px-2 py-0.5 rounded-full tracking-wide inline-block mt-0.5">
-                            {{ auth()->user()->chat_mode === 'expert' ? 'JAM 09:00 - 17:00' : 'ONLINE 24/7' }}
+                            {{ session('chat_mode', 'ai') === 'expert' ? 'JAM 09:00 - 17:00' : 'ONLINE 24/7' }}
                         </span>
                     </div>
                 </div>
@@ -40,8 +40,8 @@
                 <div class="flex items-center gap-2">
                     <form action="{{ route('chat.toggle') }}" method="POST">
                         @csrf
-                        <button type="submit" class="text-xs px-3 py-1.5 border rounded shadow-sm font-semibold {{ auth()->user()->chat_mode === 'expert' ? 'bg-terracotta-100 text-terracotta-700' : 'bg-earth-100 text-earth-700' }}">
-                            {{ auth()->user()->chat_mode === 'expert' ? 'Kembali ke AI' : 'Bicara dgn Ahli' }}
+                        <button type="submit" class="text-xs px-3 py-1.5 border rounded shadow-sm font-semibold {{ session('chat_mode', 'ai') === 'expert' ? 'bg-terracotta-100 text-terracotta-700' : 'bg-earth-100 text-earth-700' }}">
+                            {{ session('chat_mode', 'ai') === 'expert' ? 'Kembali ke AI' : 'Bicara dgn Ahli' }}
                         </button>
                     </form>
                     <form action="{{ route('chat.clear') }}" method="POST" onsubmit="return confirm('Hapus semua percakapan?');">
@@ -154,7 +154,7 @@
                         style="background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png'); mix-blend-mode: multiply;">
                     </div>
 
-                    @if(auth()->user()->chat_mode === 'expert')
+                    @if(session('chat_mode', 'ai') === 'expert')
                         <div class="sticky top-0 z-20 mb-6 flex justify-center">
                             <div class="bg-blue-50 border border-blue-200 text-blue-800 text-xs px-4 py-2 rounded-full shadow-sm flex items-center gap-2">
                                 <span class="relative flex h-2 w-2">
@@ -181,37 +181,29 @@
                         </div>
                     @else
                         @foreach($messages as $msg)
-                            @if($msg->sender_type === 'system')
-                                <div class="flex w-full justify-center animate-fade-in my-4 relative z-10">
-                                    <div class="bg-earth-100 text-earth-600 text-xs md:text-sm font-medium px-4 py-2 rounded-full shadow-sm text-center">
-                                        {{ $msg->message }}
-                                    </div>
-                                </div>
-                            @else
-                                <div class="flex w-full {{ $msg->is_user ? 'justify-end' : 'justify-start' }} animate-fade-in group relative z-10 mb-6">
-                                    <div class="flex {{ $msg->is_user ? 'items-end' : 'items-start' }} max-w-[85%] md:max-w-[75%] gap-3">
+                            <div class="flex w-full {{ $msg->is_user ? 'justify-end' : 'justify-start' }} animate-fade-in group relative z-10 mb-6">
+                                <div class="flex {{ $msg->is_user ? 'items-end' : 'items-start' }} max-w-[85%] md:max-w-[75%] gap-3">
 
-                                        @if(!$msg->is_user)
-                                            <div class="w-8 h-8 md:w-10 md:h-10 rounded-2xl bg-sage-50 border border-sage-100 flex items-center justify-center text-lg shrink-0 shadow-sm mt-1">
-                                                {{ $msg->sender_type === 'expert' ? '👨‍⚕️' : '🌿' }}
-                                            </div>
-                                        @endif
+                                    @if(!$msg->is_user)
+                                        <div class="w-8 h-8 md:w-10 md:h-10 rounded-2xl bg-sage-50 border border-sage-100 flex items-center justify-center text-lg shrink-0 shadow-sm mt-1">
+                                            🌿
+                                        </div>
+                                    @endif
 
-                                        <div class="relative px-5 py-4 shadow-sm text-[15px] leading-relaxed
-                                            {{ $msg->is_user
-                                                ? 'bg-[#f05e35] text-white rounded-[2rem] rounded-tr-none shadow-orange-200/50'
-                                                : ($msg->sender_type === 'expert' ? 'bg-blue-50 text-blue-900 border border-blue-200 rounded-[2rem] rounded-tl-none' : 'bg-white text-[#362214] border border-[#d6cec5] rounded-[2rem] rounded-tl-none') }}">
+                                    <div class="relative px-5 py-4 shadow-sm text-[15px] leading-relaxed
+                                        {{ $msg->is_user
+                                            ? 'bg-[#f05e35] text-white rounded-[2rem] rounded-tr-none shadow-orange-200/50'
+                                            : 'bg-white text-[#362214] border border-[#d6cec5] rounded-[2rem] rounded-tl-none' }}">
 
-                                            {!! nl2br(e($msg->message)) !!}
+                                        {!! nl2br(e($msg->message)) !!}
 
-                                            <div class="text-[10px] mt-3 text-right font-bold uppercase tracking-wider opacity-50
-                                                {{ $msg->is_user ? 'text-orange-100' : 'text-[#a38f82]' }}">
-                                                {{ $msg->created_at->format('H:i') }}
-                                            </div>
+                                        <div class="text-[10px] mt-3 text-right font-bold uppercase tracking-wider opacity-50
+                                            {{ $msg->is_user ? 'text-orange-100' : 'text-[#a38f82]' }}">
+                                            {{ $msg->created_at->format('H:i') }}
                                         </div>
                                     </div>
                                 </div>
-                            @endif
+                            </div>
                         @endforeach
                     @endif
                     <!-- Spacer for easy scrolling -->
@@ -222,7 +214,7 @@
                 <!-- Use bottom padding 6 on mobile, safe-area-inset fallback -->
                 <div class="pt-4 px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] md:p-6 bg-white/80 border-t border-earth-100 relative z-20 backdrop-blur-md shrink-0">
                     @php
-                        $isExpert = auth()->user()->chat_mode === 'expert';
+                        $isExpert = session('chat_mode', 'ai') === 'expert';
                         $currentHour = (int) now()->format('H');
                         $isOffHours = $currentHour < 9 || $currentHour >= 17;
                         $disableInput = $isExpert && $isOffHours;

@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class ChatMessage extends Model
 {
     
-    protected $fillable = ['user_id', 'message', 'is_user', 'sender_type'];
+    protected $fillable = ['user_id', 'message', 'is_user'];
 }

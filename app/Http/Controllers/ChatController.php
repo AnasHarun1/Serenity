@@ -35,13 +35,10 @@ class ChatController extends Controller
             'user_id' => $userId,
             'message' => $userMessage,
             'is_user' => true,
-            'sender_type' => 'user'
         ]);
 
-        $user = Auth::user();
-
         // Jika mode expert, tidak panggil AI API
-        if ($user->chat_mode === 'expert') {
+        if (session('chat_mode') === 'expert') {
             if ($request->wantsJson()) {
                 return response()->json([
                     'status' => 'success',
@@ -156,7 +153,6 @@ class ChatController extends Controller
             'user_id' => $userId,
             'message' => $aiReply,
             'is_user' => false,
-            'sender_type' => 'ai',
         ]);
 
         if ($request->wantsJson()) {
@@ -188,25 +184,9 @@ class ChatController extends Controller
 
     public function toggleMode(Request $request)
     {
-        $user = Auth::user();
-        $user->chat_mode = $user->chat_mode === 'expert' ? 'ai' : 'expert';
-        $user->save();
-
-        if ($user->chat_mode === 'expert') {
-            ChatMessage::create([
-                'user_id' => $user->id,
-                'message' => 'Obrolan telah dialihkan ke Customer Service / Ahli Asli. Layanan aktif pkl 09.00 - 17.00.',
-                'is_user' => false,
-                'sender_type' => 'system'
-            ]);
-        } else {
-            ChatMessage::create([
-                'user_id' => $user->id,
-                'message' => 'Obrolan telah kembali ke mode Serenity AI.',
-                'is_user' => false,
-                'sender_type' => 'system'
-            ]);
-        }
+        $currentMode = session('chat_mode', 'ai');
+        $newMode = $currentMode === 'expert' ? 'ai' : 'expert';
+        session(['chat_mode' => $newMode]);
 
         return redirect()->back();
     }
