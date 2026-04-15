@@ -34,8 +34,27 @@ class ChatController extends Controller
         ChatMessage::create([
             'user_id' => $userId,
             'message' => $userMessage,
-            'is_user' => true, 
+            'is_user' => true,
+            'sender_type' => 'user'
         ]);
+
+        $user = Auth::user();
+
+        // Jika mode expert, tidak panggil AI API
+        if ($user->chat_mode === 'expert') {
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'status' => 'success',
+                    'user_message' => [
+                        'message' => $userMessage,
+                        'is_user' => true,
+                        'created_at' => now()->format('H:i'),
+                    ],
+                    'ai_message' => null
+                ]);
+            }
+            return redirect()->route('chat.index');
+        }
 
        
         $recentMoods = Mood::where('user_id', $userId)
@@ -137,6 +156,7 @@ class ChatController extends Controller
             'user_id' => $userId,
             'message' => $aiReply,
             'is_user' => false,
+            'sender_type' => 'ai',
         ]);
 
         if ($request->wantsJson()) {
@@ -164,5 +184,30 @@ class ChatController extends Controller
     {
         ChatMessage::where('user_id', Auth::id())->delete();
         return redirect()->route('chat.index');
+    }
+
+    public function toggleMode(Request $request)
+    {
+        $user = Auth::user();
+        $user->chat_mode = $user->chat_mode === 'expert' ? 'ai' : 'expert';
+        $user->save();
+
+        if ($user->chat_mode === 'expert') {
+            ChatMessage::create([
+                'user_id' => $user->id,
+                'message' => 'Obrolan telah dialihkan ke Customer Service / Ahli Asli. Layanan aktif pkl 09.00 - 17.00.',
+                'is_user' => false,
+                'sender_type' => 'system'
+            ]);
+        } else {
+            ChatMessage::create([
+                'user_id' => $user->id,
+                'message' => 'Obrolan telah kembali ke mode Serenity AI.',
+                'is_user' => false,
+                'sender_type' => 'system'
+            ]);
+        }
+
+        return redirect()->back();
     }
 }

@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'streak',
         'last_checkin',
+        'chat_mode',
     ];
 
     /**

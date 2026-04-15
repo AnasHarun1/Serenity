@@ -27,6 +27,7 @@ Route::middleware(['auth'])->group(function () {
    
     Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
     Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
+    Route::post('/chat/toggle', [ChatController::class, 'toggleMode'])->name('chat.toggle');
     Route::post('/chat/clear', [ChatController::class, 'clearChat'])->name('chat.clear');
 
     
