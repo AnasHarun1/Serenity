@@ -82,19 +82,6 @@ Route::get('/run-seeder', function () {
         return 'Seeder failed: ' . $e->getMessage();
     }
 });
-Route::get('/force-fix-db', function () {
-    try {
-        if (!\Illuminate\Support\Facades\Schema::hasColumn('moods', 'sleep_hours')) {
-             \Illuminate\Support\Facades\Schema::table('moods', function (\Illuminate\Database\Schema\Blueprint $table) {
-                $table->decimal('sleep_hours', 4, 1)->nullable()->after('emoji_level');
-            });
-            return 'Column sleep_hours added successfully!';
-        }
-        return 'Column sleep_hours already exists!';
-    } catch (\Exception $e) {
-        return 'Fix failed: ' . $e->getMessage();
-    }
-});
 
 // ---------------------------------
 
