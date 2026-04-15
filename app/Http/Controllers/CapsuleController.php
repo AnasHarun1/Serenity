@@ -9,7 +9,6 @@ use Carbon\Carbon;
 
 class CapsuleController extends Controller
 {
-    // 1. Daftar Kapsul
     public function index()
     {
         $capsules = Capsule::where('user_id', Auth::id())
@@ -19,19 +18,18 @@ class CapsuleController extends Controller
         return view('capsule.index', compact('capsules'));
     }
 
-    // 2. Form Buat Baru
     public function create()
     {
         return view('capsule.create');
     }
 
-    // 3. Simpan Kapsul
+    
     public function store(Request $request)
     {
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'scheduled_at' => 'required|date|after:today', // Harus tanggal masa depan
+            'scheduled_at' => 'required|date|after:today', 
         ]);
 
         Capsule::create([
@@ -45,17 +43,17 @@ class CapsuleController extends Controller
         return redirect()->route('capsule.index')->with('success', 'Kapsul waktu berhasil dikubur! ⏳');
     }
 
-    // 4. Buka Kapsul (Cek Waktu)
+   
     public function show($id)
     {
         $capsule = Capsule::where('user_id', Auth::id())->findOrFail($id);
 
-        // Cek apakah sudah waktunya?
+       
         if ($capsule->scheduled_at->isFuture()) {
             return redirect()->route('capsule.index')->with('error', 'Sabar ya! Belum waktunya membuka kapsul ini.');
         }
 
-        // Tandai sudah dibaca
+      
         if (!$capsule->is_read) {
             $capsule->update(['is_read' => true]);
         }

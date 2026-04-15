@@ -4,23 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Auth; // Untuk tahu siapa yang login
-use Illuminate\Support\Facades\Log; // Import Log Facade
-use App\Models\ChatMessage; // Panggil model Chat
+use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Log; 
+use App\Models\ChatMessage; 
 use App\Models\Mood;
 
 class ChatController extends Controller
 {
-    // 1. Tampilkan Halaman Chat
+    
     public function index()
     {
-        // Ambil riwayat chat user yang sedang login
+       
         $messages = ChatMessage::where('user_id', Auth::id())->get();
 
         return view('chat.index', compact('messages'));
     }
 
-    // 2. Proses Kirim Pesan ke AI
+    
     public function sendMessage(Request $request)
     {
         $request->validate([
@@ -30,14 +30,14 @@ class ChatController extends Controller
         $userMessage = $request->input('message');
         $userId = Auth::id();
 
-        // A. Simpan Chat User ke Database
+       
         ChatMessage::create([
             'user_id' => $userId,
             'message' => $userMessage,
-            'is_user' => true, // Ini chat dari manusia
+            'is_user' => true, 
         ]);
 
-        // --- AMBIL RIWAYAT MOOD (AI CONTEXT) ---
+       
         $recentMoods = Mood::where('user_id', $userId)
             ->orderBy('created_at', 'desc')
             ->take(5)
@@ -47,9 +47,9 @@ class ChatController extends Controller
         foreach ($recentMoods as $mood) {
             $moodContext .= "- " . $mood->created_at->format('d M') . ": Level " . $mood->emoji_level . " (" . ($mood->tags ?? '-') . ")\n";
         }
-        // ----------------------------------------
+       
 
-        // --- AMBIL 30 CHAT TERAKHIR (CONTEXT WINDOW) ---
+      
         $history = ChatMessage::where('user_id', $userId)
             ->orderBy('created_at', 'desc')
             ->take(30)
@@ -66,12 +66,13 @@ class ChatController extends Controller
                     "2. Anggap pesan-pesan di atas adalah ingatanmu.\n" .
                     "3. Jika pengguna menunjukkan tanda-tanda ingin menyakiti diri sendiri atau bunuh diri, STOP percakapan dan berikan pesan berikut: 'Saya mendengar rasa sakitmu, tapi saya hanyalah AI. Tolong segera hubungi profesional atau layanan darurat di 119.'\n" .
                     "4. Jika kamu berpikir (thinking process), abaikan tag <think>...</think> di output akhir.\n" .
-                    "5. Jaga jawaban tetap ringkas dan suportif.kecuali jika user meminta penjelasan lebih lanjut\n\n" .
+                    "5. Jaga jawaban tetap ringkas dan suportif.kecuali jika user meminta penjelasan lebih lanjut\n" .
+                    "6. Jika pengguna merasa tidak puas dengan jawabanmu atau meminta ahli asli, beri tahu bahwa chat sudah diarahkan ke ahli asli. Berikan juga info bahwa layanan chat dengan ahli asli hanya tersedia dari jam 09.00 - 17.00.\n\n" .
                     $moodContext,
             ]
         ];
 
-        // Masukkan history chat (termasuk pesan user yang baru saja disimpan)
+       
         foreach ($history as $chat) {
             $messagesForAI[] = [
                 'role' => $chat->is_user ? 'user' : 'assistant',
@@ -79,18 +80,17 @@ class ChatController extends Controller
             ];
         }
 
-        // Tambahkan pesan user saat ini (yang paling baru)
+        
         $messagesForAI[] = [
             'role' => 'user',
             'content' => $userMessage,
         ];
-        // ----------------------------------------
+     
 
-        // B. Kirim ke Groq AI
-        // Decode base64 key from vercel.json env (bypasses GitHub push protection)
+       
         $b64Key = getenv('GROQ_API_KEY_B64');
         $apiKey = !empty($b64Key) ? base64_decode($b64Key) : null;
-        // Fallback chain: runtime secrets, native env, config, Laravel env
+      
         if (empty($apiKey)) {
             $secrets = @include(base_path('config/runtime_secrets.php'));
             $apiKey = (!empty($secrets['groq_key'])) ? $secrets['groq_key'] : null;
@@ -103,7 +103,7 @@ class ChatController extends Controller
             $aiReply = "Maaf, kunci API AI belum dikonfigurasi. Mohon hubungi admin.";
         } else {
             try {
-                // "withoutVerifying()" penting untuk localhost Windows agar tidak error SSL
+                
                 $response = Http::withoutVerifying()
                     ->withHeaders([
                         'Authorization' => 'Bearer ' . $apiKey,
@@ -118,25 +118,25 @@ class ChatController extends Controller
                     throw new \Exception('API Error: ' . $response->body());
                 }
 
-                // Ambil teks jawaban AI (Format OpenAI)
+               
                 $rawReply = $response->json()['choices'][0]['message']['content'];
 
-                // Bersihkan tag <think>...</think> jika ada
+                
                 $aiReply = preg_replace('/<think>.*?<\/think>/s', '', $rawReply);
                 $aiReply = trim($aiReply);
 
             } catch (\Exception $e) {
                 Log::error('Chat Error: ' . $e->getMessage());
-                // Tampilkan pesan error asli ke user untuk debugging
+                
                 $aiReply = "Maaf, terjadi error sistem: " . $e->getMessage();
             }
         }
 
-        // C. Simpan Jawaban AI ke Database
+       
         $botMessage = ChatMessage::create([
             'user_id' => $userId,
             'message' => $aiReply,
-            'is_user' => false, // Ini chat dari Robot
+            'is_user' => false,
         ]);
 
         if ($request->wantsJson()) {
@@ -155,11 +155,11 @@ class ChatController extends Controller
             ]);
         }
 
-        // Kembali ke halaman chat
+        
         return redirect()->route('chat.index');
     }
 
-    // 3. Hapus Riwayat Chat (Opsional)
+   
     public function clearChat()
     {
         ChatMessage::where('user_id', Auth::id())->delete();

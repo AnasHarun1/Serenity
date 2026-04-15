@@ -10,13 +10,11 @@ class ArticleSeeder extends Seeder
 {
     public function run(): void
     {
-        // KITA KOSONGKAN DULU TABEL ARTIKEL AGAR TIDAK DOBEL
+     
         Article::truncate();
 
         $articles = [
-            // =============================================
-            // KATEGORI 1: UNTUK MOOD SEDIH / CEMAS (Level 1-2)
-            // =============================================
+            
             [
                 'title' => 'Teknik Grounding 5-4-3-2-1: Pertolongan Pertama Saat Panik',
                 'category' => 'Anxiety',
@@ -39,9 +37,7 @@ class ArticleSeeder extends Seeder
                 'content' => "Merasa lelah sepanjang waktu bahkan setelah tidur cukup? Kehilangan motivasi untuk kuliah? Atau menjadi sinis terhadap dosen dan teman? Hati-hati, itu bukan sekadar malas, tapi tanda-tanda Burnout.\n\nBurnout akademik terjadi karena stres kronis yang tidak tertangani. Otak Anda kelelahan karena terus-menerus dipaksa bekerja tanpa istirahat yang berkualitas. Solusinya bukan 'belajar lebih keras', tapi 'istirahat lebih cerdas'.\n\nCobalah terapkan teknik Pomodoro (25 menit kerja, 5 menit istirahat). Prioritaskan tidur 7-8 jam sehari. Dan yang terpenting, temukan hobi kecil di luar akademik yang membuat Anda bahagia, entah itu memasak, melukis, atau sekadar jalan-jalan sore. Anda adalah manusia, bukan robot pengerja tugas."
             ],
 
-            // =============================================
-            // KATEGORI 2: UNTUK MOOD NETRAL / BIASA (Level 3)
-            // =============================================
+         
             [
                 'title' => 'Sleep Hygiene: Cara Tidur Berkualitas untuk Otak yang Sehat',
                 'category' => 'Sleep',
@@ -64,9 +60,7 @@ class ArticleSeeder extends Seeder
                 'content' => "Di era notifikasi yang tiada henti, kemampuan kita untuk fokus (Deep Work) semakin menurun. Kita menjadi mudah terdistraksi dan cemas jika tertinggal informasi (FOMO). Saatnya melakukan Digital Detox sederhana.\n\nCobalah mode 'Do Not Disturb' pada jam-jam produktif. Matikan notifikasi aplikasi yang tidak krusial seperti media sosial atau game. Tetapkan zona bebas HP, misalnya di meja makan atau di tempat tidur.\n\nDengan mengurangi kebisingan digital, otak Anda mendapatkan ruang untuk bernapas, berpikir jernih, dan menjadi lebih kreatif. Dunia tidak akan runtuh hanya karena Anda tidak membalas chat selama 1 jam."
             ],
 
-            // =============================================
-            // KATEGORI 3: UNTUK MOOD SENANG / HEBAT (Level 4-5)
-            // =============================================
+         
             [
                 'title' => 'Memanfaatkan Momentum: Cara Produktif Saat Bahagia',
                 'category' => 'Productivity',

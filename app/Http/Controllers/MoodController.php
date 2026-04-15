@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\Auth;
 
 class MoodController extends Controller
 {
-    // 1. Tampilkan Halaman Input Mood
+
     public function create()
     {
-        // Cek apakah hari ini sudah isi mood? (Opsional, biar tidak dobel)
+
         $todayMood = Mood::where('user_id', Auth::id())
             ->whereDate('created_at', today())
             ->first();
@@ -19,7 +19,7 @@ class MoodController extends Controller
         return view('mood.create', compact('todayMood'));
     }
 
-    // 2. Simpan Mood ke Database
+
     public function store(Request $request)
     {
         $request->validate([
@@ -29,9 +29,9 @@ class MoodController extends Controller
         ]);
 
         $tagsString = $request->tags ? implode(', ', $request->tags) : null;
-        $user = Auth::user(); // Ambil user yg sedang login
+        $user = Auth::user();
 
-        // 1. Simpan Mood
+
         Mood::create([
             'user_id' => $user->id,
             'emoji_level' => $request->emoji_level,
@@ -39,22 +39,17 @@ class MoodController extends Controller
             'description' => $request->description,
         ]);
 
-        // 2. LOGIKA STREAK (Gamifikasi) 🔥
+
         $today = now()->format('Y-m-d');
         $yesterday = now()->subDay()->format('Y-m-d');
 
-        // Cek apakah hari ini belum check-in (biar gak nambah kalau spam submit)
-        if ($user->last_checkin !== $today) {
 
+        if ($user->last_checkin !== $today) {
             if ($user->last_checkin === $yesterday) {
-                // Kalau check-in terakhir adalah kemarin, TAMBAH STREAK
                 $user->increment('streak');
             } else {
-                // Kalau bolong sehari atau baru mulai, RESET jadi 1
                 $user->streak = 1;
             }
-
-            // Update tanggal check-in terakhir
             $user->last_checkin = $today;
             $user->save();
         }

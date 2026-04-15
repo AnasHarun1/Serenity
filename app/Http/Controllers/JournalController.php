@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Http;
 
 class JournalController extends Controller
 {
-    // 1. Tampilkan Daftar Jurnal
+   
     public function index()
     {
         $journals = Journal::where('user_id', Auth::id())
@@ -18,16 +18,16 @@ class JournalController extends Controller
         return view('journal.index', compact('journals'));
     }
 
-    // 2. Tampilkan Form Tulis Jurnal
+  
     public function create()
     {
         return view('journal.create');
     }
 
-    // 3. Proses Simpan
+  
     public function store(Request $request)
     {
-        // Validasi input
+        
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
@@ -46,7 +46,7 @@ class JournalController extends Controller
         return redirect()->route('journal.index')->with('success', 'Jurnal berhasil disimpan!');
     }
 
-    // 4. Lihat Detail Jurnal
+   
     public function show($id)
     {
         $journal = Journal::where('user_id', Auth::id())->findOrFail($id);

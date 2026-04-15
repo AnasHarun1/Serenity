@@ -19,33 +19,21 @@ Route::get('/library', [ArticleController::class, 'index'])->name('library.index
 Route::get('/library/{slug}', [ArticleController::class, 'show'])->name('library.show');
 
 // Features
-
-
 Route::get('/report/download', [FeatureController::class, 'downloadReport'])->name('report.download');
 Route::get('/sos', [FeatureController::class, 'sos'])->name('features.sos');
 Route::resource('capsule', CapsuleController::class);
 
 Route::middleware(['auth'])->group(function () {
-    // Rute untuk fitur Chat
+   
     Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
     Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
     Route::post('/chat/clear', [ChatController::class, 'clearChat'])->name('chat.clear');
 
-    // Journal
+    
     Route::resource('journal', JournalController::class);
 });
 
-Route::get('/cek-model', function () {
-    // PASTE API KEY KAMU DI SINI
-    $apiKey = "AIzaSyDGEjo90GeddyjZaV5K4A2ZbbCpI-56ujU";
 
-    // Kita minta daftar model, bukan minta generate content
-    $response = Http::get('https://generativelanguage.googleapis.com/v1beta/models?key=' . $apiKey);
-
-    return $response->json();
-});
-
-// Rute Mood Tracker
 Route::get('/mood/check-in', [MoodController::class, 'create'])->name('mood.create');
 Route::post('/mood/store', [MoodController::class, 'store'])->name('mood.store');
 
@@ -73,7 +61,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/journal/{id}', [JournalController::class, 'show'])->name('journal.show');
 });
 
-// --- TEMPORARY MIGRATION ROUTE ---
+
 Route::get('/run-migration', function () {
     try {
         Artisan::call('migrate', ['--force' => true]);
@@ -82,9 +70,9 @@ Route::get('/run-migration', function () {
         return 'Migration failed: ' . $e->getMessage();
     }
 });
-// ---------------------------------
 
-// --- TEMPORARY SEEDER ROUTE ---
+
+
 Route::get('/run-seeder', function () {
     try {
         Artisan::call('db:seed', ['--force' => true]);
