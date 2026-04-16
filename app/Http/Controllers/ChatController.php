@@ -4,23 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Auth; 
-use Illuminate\Support\Facades\Log; 
-use App\Models\ChatMessage; 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use App\Models\ChatMessage;
 use App\Models\Mood;
 
 class ChatController extends Controller
 {
-    
+
     public function index()
     {
-       
+
         $messages = ChatMessage::where('user_id', Auth::id())->get();
 
         return view('chat.index', compact('messages'));
     }
 
-    
+
     public function sendMessage(Request $request)
     {
         $request->validate([
@@ -30,7 +30,7 @@ class ChatController extends Controller
         $userMessage = $request->input('message');
         $userId = Auth::id();
 
-       
+
         ChatMessage::create([
             'user_id' => $userId,
             'message' => $userMessage,
@@ -53,7 +53,7 @@ class ChatController extends Controller
             return redirect()->route('chat.index');
         }
 
-       
+
         $recentMoods = Mood::where('user_id', $userId)
             ->orderBy('created_at', 'desc')
             ->take(5)
@@ -63,9 +63,9 @@ class ChatController extends Controller
         foreach ($recentMoods as $mood) {
             $moodContext .= "- " . $mood->created_at->format('d M') . ": Level " . $mood->emoji_level . " (" . ($mood->tags ?? '-') . ")\n";
         }
-       
 
-      
+
+
         $history = ChatMessage::where('user_id', $userId)
             ->orderBy('created_at', 'desc')
             ->take(30)
@@ -84,11 +84,18 @@ class ChatController extends Controller
                     "4. Jika kamu berpikir (thinking process), abaikan tag <think>...</think> di output akhir.\n" .
                     "5. Jaga jawaban tetap ringkas dan suportif.kecuali jika user meminta penjelasan lebih lanjut\n" .
                     "6. Jika pengguna merasa tidak puas dengan jawabanmu atau meminta ahli asli, beri tahu bahwa chat sudah diarahkan ke ahli asli. Berikan juga info bahwa layanan chat dengan ahli asli hanya tersedia dari jam 09.00 - 17.00.\n\n" .
+
+                    "INSTRUKSI TAMBAHAN (GAYA KOMUNIKASI): \n" .
+                    "7. Ulangi atau sebutkan kembali perasaan pengguna di awal kalimat agar mereka merasa dipedulikan.\n" .
+                    "8. Jangan langsung memberikan solusi, lakukan validasi perasaan pengguna terlebih dahulu.\n" .
+                    "9. Jangan menggunakan bahasa yang fleksibel atau berubah-ubah (tetap pertahankan gaya santai layaknya teman dari awal sampai akhir).\n" .
+                    "10. Saat memberikan saran, berikan sebagai pilihan (opsi), BUKAN menyuruh atau memerintah pengguna untuk mencoba sesuatu.\n" .
+                    "11. Jika pengguna pamit atau ingin menghentikan percakapan, berikan kalimat penutup yang menenangkan agar mereka merasa sedikit lebih tenang.\n\n" .
                     $moodContext,
             ]
         ];
 
-       
+
         foreach ($history as $chat) {
             $messagesForAI[] = [
                 'role' => $chat->is_user ? 'user' : 'assistant',
@@ -96,17 +103,17 @@ class ChatController extends Controller
             ];
         }
 
-        
+
         $messagesForAI[] = [
             'role' => 'user',
             'content' => $userMessage,
         ];
-     
 
-       
+
+
         $b64Key = getenv('GROQ_API_KEY_B64');
         $apiKey = !empty($b64Key) ? base64_decode($b64Key) : null;
-      
+
         if (empty($apiKey)) {
             $secrets = @include(base_path('config/runtime_secrets.php'));
             $apiKey = (!empty($secrets['groq_key'])) ? $secrets['groq_key'] : null;
@@ -119,7 +126,7 @@ class ChatController extends Controller
             $aiReply = "Maaf, kunci API AI belum dikonfigurasi. Mohon hubungi admin.";
         } else {
             try {
-                
+
                 $response = Http::withoutVerifying()
                     ->withHeaders([
                         'Authorization' => 'Bearer ' . $apiKey,
@@ -134,21 +141,21 @@ class ChatController extends Controller
                     throw new \Exception('API Error: ' . $response->body());
                 }
 
-               
+
                 $rawReply = $response->json()['choices'][0]['message']['content'];
 
-                
+
                 $aiReply = preg_replace('/<think>.*?<\/think>/s', '', $rawReply);
                 $aiReply = trim($aiReply);
 
             } catch (\Exception $e) {
                 Log::error('Chat Error: ' . $e->getMessage());
-                
+
                 $aiReply = "Maaf, terjadi error sistem: " . $e->getMessage();
             }
         }
 
-       
+
         $botMessage = ChatMessage::create([
             'user_id' => $userId,
             'message' => $aiReply,
@@ -171,11 +178,11 @@ class ChatController extends Controller
             ]);
         }
 
-        
+
         return redirect()->route('chat.index');
     }
 
-   
+
     public function clearChat()
     {
         ChatMessage::where('user_id', Auth::id())->delete();
